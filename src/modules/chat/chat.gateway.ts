@@ -28,14 +28,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       console.log('User joined');
 
       const message = await this.chatService.getMessage(room);
-      console.log("los mensajes: ",message);
       client.emit('load_message', message);
   }
 
     @SubscribeMessage('send_message')
     async handleSendMessage(client: Socket, data: { room: string; author: string; message: string }) {
-        console.log('la data:',data);
-        console.log(`Mensaje recibido: ${data.message}`);
+        console.log(`receive message: ${data.message}`);
 
         // Guardar mensaje en la base de datos
         const savedMessage = await this.chatService.saveMessage(data.room, data.author, data.message);
